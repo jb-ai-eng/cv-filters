@@ -53,13 +53,12 @@ def negative(img):
 
 
 def cartoon(img):
-    # TODO (your exercise): combine what already exists.
-    #   1. Get the edges with cv2.adaptiveThreshold on the gray image
-    #      smoothed with cv2.medianBlur(gray, 7)
-    #   2. Smooth the colors with cv2.bilateralFilter(img, 9, 250, 250)
-    #   3. Combine both with cv2.bitwise_and(colors, colors, mask=edges)
-    # Until you do it, return the image unchanged.
-    return img
+    g = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    g = cv2.medianBlur(g, 7)
+    lines = cv2.adaptiveThreshold(g, 255, cv2.ADAPTIVE_THRESH_MEAN_C,
+                                  cv2.THRESH_BINARY, 9, 2)
+    colors = cv2.bilateralFilter(img, 9, 250, 250)
+    return cv2.bitwise_and(colors, colors, mask=lines)
 
 
 FILTERS = {

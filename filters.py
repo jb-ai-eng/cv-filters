@@ -29,8 +29,11 @@ def gray(img):
 
 
 def blur(img):
-    # (21, 21) is the "brush" size; it must be odd. Try changing it.
-    return cv2.GaussianBlur(img, (21, 21), 0)
+    k = cv2.getTrackbarPos("Blur","CV Filters") 
+    if k % 2 == 0:
+        k = k+ 1
+    # Blur size comes from the slider; it must be odd, so we fix even values
+    return cv2.GaussianBlur(img, (k, k), 0)
 
 
 def edges(img):
@@ -90,6 +93,9 @@ def main():
         cam = cv2.VideoCapture(0)
         if not cam.isOpened():
             sys.exit("Could not open the webcam (check Terminal's camera permission)")
+
+    cv2.namedWindow("CV Filters")
+    cv2.createTrackbar("Blur","CV Filters", 21, 99, lambda v: None) 
 
     shots = 0
     while True:

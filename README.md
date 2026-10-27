@@ -40,7 +40,7 @@ Each level = one or more commits. Check things off as you go.
 ### Level 5 — My own idea
 - [ ] Track an object by color (HSV + `cv2.inRange`)
 - [ ] Or hand control (MediaPipe Hands): switch filters with gestures
-- [ ] - [ ] Switch filters by opening my mouth
+- [ ] Switch filters by opening my mouth
 - [ ] Take a photo when I wink
 - [ ] Drowsiness alert: detect when eyes stay closed too long
 

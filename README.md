@@ -22,7 +22,7 @@ Each level = one or more commits. Check things off as you go.
 ### Level 1 — Basic filters
 - [x] Gray, blur, edges, sepia
 - [x] My own filter: negative (`255 - img`)
-- [ ] Finish the `cartoon` filter (see the TODO in `filters.py`)
+- [x] Finish the `cartoon` filter (see the TODO in `filters.py`)
 
 ### Level 2 — Live controls
 - [ ] Add sliders with `cv2.createTrackbar` to tune blur and Canny thresholds
@@ -40,6 +40,9 @@ Each level = one or more commits. Check things off as you go.
 ### Level 5 — My own idea
 - [ ] Track an object by color (HSV + `cv2.inRange`)
 - [ ] Or hand control (MediaPipe Hands): switch filters with gestures
+- [ ] - [ ] Switch filters by opening my mouth
+- [ ] Take a photo when I wink
+- [ ] Drowsiness alert: detect when eyes stay closed too long
 
 ## What I'm learning
 - **Functions:** input goes in the parentheses, output comes from `return`.

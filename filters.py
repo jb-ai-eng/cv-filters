@@ -13,6 +13,11 @@ import sys
 import cv2
 import numpy as np
 
+FACE_DETECTOR = cv2.FaceDetectorYN.create(
+    "models/face_detection_yunet.onnx", "", (320, 240)
+) 
+FACE_DETECTOR.setScoreThreshold(0.6) 
+
 
 # ---------- FILTERS ----------
 # Each filter takes a BGR image (OpenCV stores colors as Blue, Green, Red)
@@ -66,6 +71,17 @@ def cartoon(img):
     return cv2.bitwise_and(colors, colors, mask=lines)
 
 
+def face_box(img):
+    h, w = img.shape[:2]
+    FACE_DETECTOR.setInputSize((w, h))
+    _, faces = FACE_DETECTOR.detect(img)
+    out = img.copy()
+    if faces is not None:
+        for face in faces:
+            x, y, fw, fh = face[:4].astype(int)
+            cv2.rectangle(out, (x, y), (x + fw, y + fh), (0, 255, 0), 2)
+    return out
+
 FILTERS = {
     ord("0"): ("Normal", normal),
     ord("1"): ("Gray", gray),
@@ -74,6 +90,7 @@ FILTERS = {
     ord("4"): ("Sepia", sepia),
     ord("5"): ("Cartoon", cartoon),
     ord("6"): ("Negative", negative),
+    ord("7"): ("Face", face_box),
 }
 
 

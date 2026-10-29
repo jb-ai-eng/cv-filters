@@ -29,8 +29,9 @@ Each level = one or more commits. Check things off as you go.
 - [ ] Show FPS on screen (use `time.time()`)
 
 ### Level 3 — Face detection
-- [ ] Detect faces with `cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")`
-- [ ] Draw a rectangle around each face
+- [x] Detect faces with YuNet (`cv2.FaceDetectorYN`), OpenCV 5's modern face detector
+- [x] Draw a rectangle around each face
+- [x] Draw landmarks: eyes, nose and mouth corners
 - [ ] "Anonymize" filter: pixelate only the face
 
 ### Level 4 — Instagram-style filters

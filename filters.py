@@ -80,6 +80,12 @@ def face_box(img):
         for face in faces:
             x, y, fw, fh = face[:4].astype(int)
             cv2.rectangle(out, (x, y), (x + fw, y + fh), (0, 255, 0), 2)
+            points = face[4:14].reshape(5, 2).astype(int)
+            cv2.circle(out, tuple(points[0]), 4, (255, 0, 0), -1)    # right eye
+            cv2.circle(out, tuple(points[1]), 4, (255, 0, 0), -1)    # left eye
+            cv2.circle(out, tuple(points[2]), 4, (0, 255, 255), -1)  # nose
+            cv2.circle(out, tuple(points[3]), 4, (0, 0, 255), -1)    # mouth right
+            cv2.circle(out, tuple(points[4]), 4, (0, 0, 255), -1)    # mouth left
     return out
 
 FILTERS = {

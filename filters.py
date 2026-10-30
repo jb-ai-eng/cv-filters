@@ -88,6 +88,22 @@ def face_box(img):
             cv2.circle(out, tuple(points[4]), 4, (0, 0, 255), -1)    # mouth left
     return out
 
+
+def anonymize(img):
+    h, w = img.shape[:2]
+    FACE_DETECTOR.setInputSize((w, h))
+    _, faces = FACE_DETECTOR.detect(img)
+    out = img.copy()
+    if faces is not None:
+        for face in faces:
+            x, y, fw, fh = face[:4].astype(int)
+            x, y = max(x, 0), max(y, 0)
+            roi = out[y:y + fh, x:x + fw]
+            b = cv2.GaussianBlur(roi, (67, 51 ), 0) 
+            out [y:y + fh, x:x + fw]= b
+    return out
+
+
 FILTERS = {
     ord("0"): ("Normal", normal),
     ord("1"): ("Gray", gray),
@@ -97,6 +113,7 @@ FILTERS = {
     ord("5"): ("Cartoon", cartoon),
     ord("6"): ("Negative", negative),
     ord("7"): ("Face", face_box),
+    ord("8"): ("Anonymize", anonymize),
 }
 
 

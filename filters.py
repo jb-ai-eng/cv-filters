@@ -7,7 +7,8 @@ Usage:
 
 Keys:
     0 normal | 1 gray | 2 blur | 3 edges | 4 sepia | 5 cartoon | 6 negative
-    s save screenshot | q quit
+    7 face | 8 anonymize
+
 """
 import sys
 import cv2

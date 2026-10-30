@@ -54,7 +54,7 @@ Convertir la app de filtros en una **herramienta de privacidad para video**: ano
 ## Correcciones pendientes (revisión del 2026-10-29)
 - [x] `anonymize()` está incompleta: no tiene `return` (devuelve `None`). Todo filtro debe devolver una imagen. Cuidado con coordenadas de cara negativas o fuera del borde. (Hecho 2026-10-31: recortar → `GaussianBlur` → pegar con `out[...] = b`.)
 - [x] Ruta del modelo relativa (`"models/..."`): falla si se ejecuta desde otra carpeta. Usar `pathlib.Path(__file__).parent`. (Hecho 2026-10-31: `MODEL_PATH` + `str(MODEL_PATH)`.)
-- [ ] Canny: el slider llega a 255 pero el umbral alto está fijo en 200. Limitar el slider o usar `h, h * 2`.
+- [x] Canny: el slider llega a 255 pero el umbral alto está fijo en 200. Limitar el slider o usar `h, h * 2`. (Hecho 2026-10-31: `cv2.Canny(g, h, h * 2)`.)
 - [ ] Docstring dice teclas `0-6` (falta `7`). En el README, marcar como hecha la tarea de sliders del Nivel 2.
 - [x] Fijar versiones en `requirements.txt`. Ya está en main (PR #6) sin versiones; el venv tiene `mediapipe==1.2.0`, `numpy==2.5.4`, `opencv-contrib-python==5.0.0.93`. No instalar `opencv-python` (choca con `opencv-contrib-python`). Usar siempre `python -m pip`.
 - [ ] No mergear commits "WIP" a `main`; usar mensajes descriptivos.

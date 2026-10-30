@@ -44,10 +44,9 @@ def blur(img):
 
 
 def edges(img):
-    
     g = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     h = cv2.getTrackbarPos("Edges","CV Filters")
-    e = cv2.Canny(g, h, 200)  # thresholds: lower them to see more edges
+    e = cv2.Canny(g, h, h * 2)  # high threshold = 2x low, so low < high always
     return cv2.cvtColor(e, cv2.COLOR_GRAY2BGR)
 
 

@@ -7,14 +7,17 @@ Usage:
 
 Keys:
     0 normal | 1 gray | 2 blur | 3 edges | 4 sepia | 5 cartoon | 6 negative
+    7 face | 8 anonymize
     s save screenshot | q quit
 """
 import sys
 import cv2
 import numpy as np
+from pathlib import Path
 
+MODEL_PATH = Path(__file__).parent / "models" / "face_detection_yunet.onnx"
 FACE_DETECTOR = cv2.FaceDetectorYN.create(
-    "models/face_detection_yunet.onnx", "", (320, 240)
+    str(MODEL_PATH), "", (320, 240)
 ) 
 FACE_DETECTOR.setScoreThreshold(0.6) 
 
@@ -42,10 +45,9 @@ def blur(img):
 
 
 def edges(img):
-    
     g = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     h = cv2.getTrackbarPos("Edges","CV Filters")
-    e = cv2.Canny(g, h, 200)  # thresholds: lower them to see more edges
+    e = cv2.Canny(g, h, h * 2)  # high threshold = 2x low, so low < high always
     return cv2.cvtColor(e, cv2.COLOR_GRAY2BGR)
 
 
@@ -99,7 +101,7 @@ def anonymize(img):
             x, y, fw, fh = face[:4].astype(int)
             x, y = max(x, 0), max(y, 0)
             roi = out[y:y + fh, x:x + fw]
-            b = cv2.GaussianBlur(roi, (67, 51 ), 0) 
+            b = cv2.GaussianBlur(roi, (51, 51 ), 0) 
             out [y:y + fh, x:x + fw]= b
     return out
 

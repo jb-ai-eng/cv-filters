@@ -28,41 +28,37 @@ El proyecto está en `~/Desktop/proyecto-cv/cv-filters` (antes `cv-filtros`). Gi
    ```
 3. Para trabajar: `git switch -c <branch>` → editar → `git add <archivo>` → `git commit -m "..."` → `git push` → PR en GitHub → merge.
 
-## Dónde nos quedamos (2026-10-30)
-**Hecho:**
-- Aprendí slicing: `lista[inicio:fin]` (el `fin` no se incluye). `img.shape[:2]` → `(alto, ancho)`.
+## Norte del proyecto (decidido 2026-10-31)
+Convertir la app de filtros en una **herramienta de privacidad para video**: anonimizar caras (y más adelante placas de carros) en webcam y archivos de video. Problema real: GDPR/leyes de privacidad, periodistas, cámaras de calle, videos de menores. Los filtros actuales se quedan como "modo demo". Meta: algo que un reclutador pueda probar con un enlace. Mejor pocas cosas bien terminadas que muchas a medias.
+
+## Roadmap (en orden; una branch + PR por fase)
+- [ ] **Fase 1 — Base limpia:** terminar las "Correcciones pendientes" pequeñas (`pathlib`, Canny, docstring).
+- [ ] **Fase 2 — Webcam externa:** elegir cámara al ejecutar (`python filters.py --camera 1`) con `argparse`.
+- [ ] **Fase 3 — Dos computadoras:** subir `.claude/` a git; instalar en Windows Git, Python, VS Code y Claude Code; venv en PowerShell (`venv\Scripts\Activate.ps1`). Regla: `git pull` al empezar, `git push` al terminar.
+- [ ] **Fase 4 — Privacy tool:** procesar archivos de video completos y guardar el resultado; elegir método (blur / pixelate / black box).
+- [ ] **Fase 5 — README con GIF demo** (primera versión; actualizar al final).
+- [ ] **Fase 6 — Refactor:** filtros reciben sus valores como parámetros (no leen sliders dentro).
+- [ ] **Fase 7 — App web:** Gradio + publicar gratis en Hugging Face Spaces (funciona también en el navegador del teléfono). Aquí se resuelve la "barra bonita".
+- [ ] **Fase 8 (opcional) — Placas de carros:** puente al siguiente proyecto (detección de carros/señales).
+
+## Dónde nos quedamos
+**2026-10-31:** `anonymize()` terminada y mergeada (PR #8). Empezando **Fase 1**: corrección de `pathlib`.
+
+**Lo que ya aprendí:**
+- Slicing: `lista[inicio:fin]` (el `fin` no se incluye). `img.shape[:2]` → `(alto, ancho)`.
 - En imágenes: `img[filas, columnas]` = `img[y, x]` (y primero, al revés que `cv2.rectangle`).
-- `anonymize()`: moví `roi = out[y:y + fh, x:x + fw]` debajo del `max()` (antes usaba `x`, `y` antes de crearlas).
-- `face_box()`: borré la línea rota `cv2.rezice(...)`.
-- Funciona sin errores al pulsar `8`, pero la cara todavía no sale borrosa.
-
-**2026-10-31:** `anonymize()` terminada y funcionando (tecla `8`). Falta commit + PR + merge.
-Siguiente corrección: ruta del modelo con `pathlib`.
-
-**Comandos para retomar mañana** (Terminal de la Mac):
-```bash
-cd ~/Desktop/proyecto-cv/cv-filters
-source venv/bin/activate
-git status                 # comprobar que estoy en mi branch, no en main
-python filters.py          # probar; pulsar 8 para Anonymize, q para salir
-```
-
-**Comandos para guardar al terminar:**
-```bash
-git add filters.py
-git commit -m "Blur faces in anonymize filter"
-git push
-```
-Cuando `anonymize` funcione: abrir PR en GitHub → merge a `main` → marcar la corrección de abajo con [x].
+- Slicing para escribir: `out[y:y + fh, x:x + fw] = b` pega `b` en ese hueco.
+- `=` calcula la derecha primero y la guarda en la izquierda. Python lee de arriba a abajo: crear una variable antes de usarla (error que repito).
+- Flujo git: branch → commit → `git push --set-upstream origin <branch>` (1ª vez) → PR → merge → `git switch main` + `git pull`.
 
 ## Correcciones pendientes (revisión del 2026-10-29)
 - [x] `anonymize()` está incompleta: no tiene `return` (devuelve `None`). Todo filtro debe devolver una imagen. Cuidado con coordenadas de cara negativas o fuera del borde. (Hecho 2026-10-31: recortar → `GaussianBlur` → pegar con `out[...] = b`.)
-- [ ] Ruta del modelo relativa (`"models/..."`): falla si se ejecuta desde otra carpeta. Usar `pathlib.Path(__file__).parent`.
+- [x] Ruta del modelo relativa (`"models/..."`): falla si se ejecuta desde otra carpeta. Usar `pathlib.Path(__file__).parent`. (Hecho 2026-10-31: `MODEL_PATH` + `str(MODEL_PATH)`.)
 - [ ] Canny: el slider llega a 255 pero el umbral alto está fijo en 200. Limitar el slider o usar `h, h * 2`.
 - [ ] Docstring dice teclas `0-6` (falta `7`). En el README, marcar como hecha la tarea de sliders del Nivel 2.
 - [x] Fijar versiones en `requirements.txt`. Ya está en main (PR #6) sin versiones; el venv tiene `mediapipe==1.2.0`, `numpy==2.5.4`, `opencv-contrib-python==5.0.0.93`. No instalar `opencv-python` (choca con `opencv-contrib-python`). Usar siempre `python -m pip`.
 - [ ] No mergear commits "WIP" a `main`; usar mensajes descriptivos.
 - [ ] (Más adelante) `blur`/`edges` leen el slider dentro de la función: pasar los valores como parámetros.
-- [ ] (Al final del proyecto) Interfaz más bonita: los sliders de OpenCV (`createTrackbar`) no se pueden personalizar. Opciones: dibujar sliders propios con `cv2` o pasar a una interfaz web (Streamlit/Gradio). Hacerlo después de pasar los valores como parámetros (punto anterior).
+- [ ] (Fase 7) Interfaz más bonita: los sliders de OpenCV (`createTrackbar`) no se pueden personalizar → se resuelve con la app web de Gradio.
 
 Al terminar una corrección, márcala con [x].

@@ -12,9 +12,11 @@ Keys:
 import sys
 import cv2
 import numpy as np
+from pathlib import Path
 
+MODEL_PATH = Path(__file__).parent / "models" / "face_detection_yunet.onnx"
 FACE_DETECTOR = cv2.FaceDetectorYN.create(
-    "models/face_detection_yunet.onnx", "", (320, 240)
+    str(MODEL_PATH), "", (320, 240)
 ) 
 FACE_DETECTOR.setScoreThreshold(0.6) 
 
@@ -99,7 +101,7 @@ def anonymize(img):
             x, y, fw, fh = face[:4].astype(int)
             x, y = max(x, 0), max(y, 0)
             roi = out[y:y + fh, x:x + fw]
-            b = cv2.GaussianBlur(roi, (67, 51 ), 0) 
+            b = cv2.GaussianBlur(roi, (51, 51 ), 0) 
             out [y:y + fh, x:x + fw]= b
     return out
 

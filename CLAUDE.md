@@ -38,10 +38,10 @@ Quiero aprender ciberseguridad mientras trabajo: cuando un paso tenga algo de se
 - **Nunca** subir caras/videos reales de personas (capturas, videos de prueba). `capture_*.png` ya está en `.gitignore`.
 - `CLAUDE.md` es público: no escribir aquí datos personales.
 - Checklist de GitHub:
-  - [ ] Activar 2FA en la cuenta de GitHub
-  - [ ] Usar el email `noreply` de GitHub en los commits
-  - [ ] Proteger la branch `main` (ruleset: PR obligatorio, sin force push, sin borrarla)
-  - [ ] Activar Dependabot alerts y secret scanning
+  - [x] Activar 2FA en la cuenta de GitHub
+  - [x] Usar el email `noreply` de GitHub en los commits
+  - [x] Proteger la branch `main` (ruleset: PR obligatorio, sin force push, sin borrarla)
+  - [x] Activar Dependabot alerts y secret scanning
   - [x] Añadir `.env` a `.gitignore`
 
 ## Roadmap (en orden; una branch + PR por fase)
@@ -55,7 +55,7 @@ Quiero aprender ciberseguridad mientras trabajo: cuando un paso tenga algo de se
 - [ ] **Fase 8 (opcional) — Placas de carros:** puente al siguiente proyecto (detección de carros/señales).
 
 ## Dónde nos quedamos
-**2026-10-31:** `anonymize()` terminada y mergeada (PR #8). **Fase 1 terminada** en branch `phase1-cleanup` (pathlib, Canny, docs) → falta push + PR + merge. Siguiente: **Fase 2** (webcam externa).
+**2026-11-01:** **Fase 1 terminada** y mergeada (PR #9). **Checklist de seguridad terminado** (PR #10 y ajustes en GitHub). Siguiente: **Fase 2** (webcam externa).
 
 **Lo que ya aprendí:**
 - Slicing: `lista[inicio:fin]` (el `fin` no se incluye). `img.shape[:2]` → `(alto, ancho)`.

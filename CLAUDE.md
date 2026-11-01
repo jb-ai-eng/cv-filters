@@ -31,6 +31,19 @@ El proyecto está en `~/Desktop/proyecto-cv/cv-filters` (antes `cv-filtros`). Gi
 ## Norte del proyecto (decidido 2026-10-31)
 Convertir la app de filtros en una **herramienta de privacidad para video**: anonimizar caras (y más adelante placas de carros) en webcam y archivos de video. Problema real: GDPR/leyes de privacidad, periodistas, cámaras de calle, videos de menores. Los filtros actuales se quedan como "modo demo". Meta: algo que un reclutador pueda probar con un enlace. Mejor pocas cosas bien terminadas que muchas a medias.
 
+## Seguridad (siempre, en todas las fases)
+Quiero aprender ciberseguridad mientras trabajo: cuando un paso tenga algo de seguridad, explícame el concepto y el riesgo.
+- El repo es **público** (necesario para el portafolio). Nadie puede cambiar `main` sin mi permiso; sí pueden leer, copiar y proponer PRs → revisar siempre el código de otros antes de mergear.
+- **Nunca** subir secretos (contraseñas, API keys, tokens): van en un archivo `.env` que está en `.gitignore`.
+- **Nunca** subir caras/videos reales de personas (capturas, videos de prueba). `capture_*.png` ya está en `.gitignore`.
+- `CLAUDE.md` es público: no escribir aquí datos personales.
+- Checklist de GitHub:
+  - [ ] Activar 2FA en la cuenta de GitHub
+  - [ ] Usar el email `noreply` de GitHub en los commits
+  - [ ] Proteger la branch `main` (ruleset: PR obligatorio, sin force push, sin borrarla)
+  - [ ] Activar Dependabot alerts y secret scanning
+  - [x] Añadir `.env` a `.gitignore`
+
 ## Roadmap (en orden; una branch + PR por fase)
 - [x] **Fase 1 — Base limpia:** terminar las "Correcciones pendientes" pequeñas (`pathlib`, Canny, docstring).
 - [ ] **Fase 2 — Webcam externa:** elegir cámara al ejecutar (`python filters.py --camera 1`) con `argparse`.

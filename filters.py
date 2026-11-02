@@ -3,6 +3,7 @@ Level 1: Real-time webcam filters.
 
 Usage:
     python filters.py              -> uses the webcam
+    python filters.py --camera 1   -> uses another camera
     python filters.py photo.jpg    -> applies the filters to an image
 
 Keys:
@@ -10,6 +11,7 @@ Keys:
     7 face | 8 anonymize
     s save screenshot | q quit
 """
+import argparse 
 import sys
 import cv2
 import numpy as np
@@ -126,15 +128,19 @@ def draw_label(img, text):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--camera", type=int, default=0)
+    parser.add_argument("image", nargs="?")
+    args = parser.parse_args()
     name, apply_filter = FILTERS[ord("0")]
     still_image = None
 
-    if len(sys.argv) > 1:
-        still_image = cv2.imread(sys.argv[1])
+    if args.image is not None:
+        still_image = cv2.imread(args.image)
         if still_image is None:
-            sys.exit(f"Could not open {sys.argv[1]}")
+            sys.exit(f"Could not open {args.image}")
     else:
-        cam = cv2.VideoCapture(0)
+        cam = cv2.VideoCapture(args.camera)
         if not cam.isOpened():
             sys.exit("Could not open the webcam (check Terminal's camera permission)")
 

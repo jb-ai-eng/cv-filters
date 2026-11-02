@@ -46,7 +46,7 @@ Quiero aprender ciberseguridad mientras trabajo: cuando un paso tenga algo de se
 
 ## Roadmap (en orden; una branch + PR por fase)
 - [x] **Fase 1 — Base limpia:** terminar las "Correcciones pendientes" pequeñas (`pathlib`, Canny, docstring).
-- [ ] **Fase 2 — Webcam externa:** elegir cámara al ejecutar (`python filters.py --camera 1`) con `argparse`.
+- [x] **Fase 2 — Webcam externa:** elegir cámara al ejecutar (`python filters.py --camera 1`) con `argparse`.
 - [ ] **Fase 3 — Dos computadoras:** subir `.claude/` a git; instalar en Windows Git, Python, VS Code y Claude Code; venv en PowerShell (`venv\Scripts\Activate.ps1`). Regla: `git pull` al empezar, `git push` al terminar.
 - [ ] **Fase 4 — Privacy tool:** procesar archivos de video completos y guardar el resultado; elegir método (blur / pixelate / black box).
 - [ ] **Fase 5 — README con GIF demo** (primera versión; actualizar al final).
@@ -55,7 +55,7 @@ Quiero aprender ciberseguridad mientras trabajo: cuando un paso tenga algo de se
 - [ ] **Fase 8 (opcional) — Placas de carros:** puente al siguiente proyecto (detección de carros/señales).
 
 ## Dónde nos quedamos
-**2026-11-01:** **Fase 1 terminada** y mergeada (PR #9). **Checklist de seguridad terminado** (PR #10 y ajustes en GitHub). Siguiente: **Fase 2** (webcam externa).
+**2026-11-01:** **Fase 1 terminada** y mergeada (PR #9). **Checklist de seguridad terminado** (PR #10 y ajustes en GitHub). **Fase 2 terminada** y mergeada (PR #12): `--camera` con `argparse`. Siguiente: **Fase 3** (dos computadoras).
 
 **Lo que ya aprendí:**
 - Slicing: `lista[inicio:fin]` (el `fin` no se incluye). `img.shape[:2]` → `(alto, ancho)`.

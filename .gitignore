@@ -3,3 +3,7 @@ __pycache__/
 capture_*.png
 .DS_Store
 .env
+data/
+*.mp4
+*.mov
+*.avi

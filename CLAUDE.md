@@ -11,6 +11,7 @@
 - Dame pistas o fragmentos pequeños para que yo escriba la solución; código completo solo si lo pido.
 - Explica la sintaxis de Python cuando aparezca algo nuevo.
 - Aprendo repitiendo: guíame paso a paso, un paso a la vez, define cada término nuevo y espera mi resultado antes de seguir.
+- Cuando te salude para seguir, pregúntame primero si estoy en Windows o Mac y dame los comandos de inicio de esa computadora.
 
 ## Cómo uso las ventanas
 - **VS Code (Claude Code):** aquí escribo código; Claude revisa y guía los pasos del proyecto.

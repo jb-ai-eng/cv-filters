@@ -21,7 +21,7 @@ MODEL_PATH = Path(__file__).parent / "models" / "face_detection_yunet.onnx"
 FACE_DETECTOR = cv2.FaceDetectorYN.create(
     str(MODEL_PATH), "", (320, 240)
 ) 
-FACE_DETECTOR.setScoreThreshold(0.6) 
+FACE_DETECTOR.setScoreThreshold(0.4) 
 
 
 # ---------- FILTERS ----------
@@ -93,7 +93,9 @@ def face_box(img):
     return out
 
 
-def anonymize(img):
+def anonymize(img, method="blur"):
+    if method not in ("blur", "pixelate", "box"):
+        raise ValueError(f"Unknown anonymization method: {method}")
     h, w = img.shape[:2]
     FACE_DETECTOR.setInputSize((w, h))
     _, faces = FACE_DETECTOR.detect(img)
@@ -108,11 +110,18 @@ def anonymize(img):
             x2 = min(x + fw + pad_x, w)
             y2 = min(y + fh + pad_y, h)
             roi = out[y1:y2, x1:x2]
-            k = (x2 - x1) // 2
-            if k % 2 == 0:
-                k += 1
-            b = cv2.GaussianBlur(roi, (k, k), 0) 
-            out[y1:y2, x1:x2] = b
+            if method == "blur":
+                k = (x2 - x1) // 2
+                if k % 2 == 0:
+                    k += 1
+                b = cv2.GaussianBlur(roi, (k, k), 0) 
+                out[y1:y2, x1:x2] = b
+            elif method == "pixelate":
+                small = cv2.resize(roi, (8, 8), interpolation=cv2.INTER_LINEAR)
+                p = cv2.resize(small, (x2 - x1, y2 - y1), interpolation=cv2.INTER_NEAREST)
+                out[y1:y2, x1:x2] = p
+            elif method == "box":
+                out[y1:y2, x1:x2] = 0 
     return out
 
 

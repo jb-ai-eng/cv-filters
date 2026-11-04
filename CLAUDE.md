@@ -67,6 +67,11 @@ Quiero aprender ciberseguridad mientras trabajo: cuando un paso tenga algo de se
 
 **2026-11-03:** **Fase 4 empezada** (PR #16 y #17). `data/` y los videos están en `.gitignore`. `anonymize_video.py` lee `data/input/test.mp4`, anonimiza cada frame y guarda `data/output/test_anonymize.mp4`. `anonymize()` agranda el área de la cara y ajusta el blur a su tamaño. Siguiente en la Fase 4: elegir método (blur / pixelate / black box) y pasar las rutas del video con `argparse`.
 
+**2026-11-04:** Métodos y opciones de video mergeados (PR #19). `anonymize(img, method="blur")` acepta `blur`, `pixelate` (8×8 cuadros) y `box`; un método desconocido lanza `ValueError` (fail closed). `anonymize_video.py` acepta `--method`, `--input` y `--output` (por defecto `data/input/test.mp4` → `data/output/test_anonymize.mp4`). Umbral de YuNet bajado de 0.6 a 0.4: menos caras perdidas, pero a veces tapa el cuello. Probado en la Mac con un video propio (`data/input/test.mov`, solo local).
+- **Problema abierto:** al girar la cabeza, la cara queda visible unos frames porque el detector la pierde.
+- **Siguiente (cierra la Fase 4):** separar `anonymize()` en "detectar caras" y "tapar caras", y en el video reusar el último recuadro unos ~5 frames cuando no se detecta ninguna cara. Probar con `--method box` y revisar el video a ojo.
+- **Idea para después:** medir de verdad (caras marcadas a mano) y comprobar con reconocimiento facial qué método protege mejor.
+
 **Lo que ya aprendí:**
 - Slicing: `lista[inicio:fin]` (el `fin` no se incluye). `img.shape[:2]` → `(alto, ancho)`.
 - En imágenes: `img[filas, columnas]` = `img[y, x]` (y primero, al revés que `cv2.rectangle`).
@@ -74,6 +79,10 @@ Quiero aprender ciberseguridad mientras trabajo: cuando un paso tenga algo de se
 - `=` calcula la derecha primero y la guarda en la izquierda. Python lee de arriba a abajo: crear una variable antes de usarla (error que repito).
 - Antes de commit: guardar (`Cmd + S`, sin ● en la pestaña) y revisar con `git diff`; después mirar "N files changed".
 - Flujo git: branch → commit → `git push --set-upstream origin <branch>` (1ª vez) → PR → merge → `git switch main` + `git pull`.
+- `=` guarda un valor; `==` compara. `elif` solo se revisa si el `if` anterior no se cumplió: un `elif` repetido nunca se ejecuta (error que cometí con `"pixelate"`).
+- `cv2.resize` recibe el tamaño como `(ancho, alto)`, al revés que el slicing `img[y, x]`.
+- Fail closed: si algo sale mal, detenerse (`raise`) antes que seguir de forma insegura. `choices=[...]` en `argparse` valida lo que se escribe en la terminal.
+- Una métrica solo vale lo que mide: "encontró algo" no es "encontró la cara correcta".
 
 ## Correcciones pendientes (revisión del 2026-10-29)
 - [x] `anonymize()` está incompleta: no tiene `return` (devuelve `None`). Todo filtro debe devolver una imagen. Cuidado con coordenadas de cara negativas o fuera del borde. (Hecho 2026-10-31: recortar → `GaussianBlur` → pegar con `out[...] = b`.)

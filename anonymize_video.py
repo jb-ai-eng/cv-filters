@@ -1,7 +1,7 @@
 import sys
 import cv2
 from pathlib import Path
-
+from filters import anonymize
 INPUT_PATH = Path(__file__).parent / "data" / "input" / "test.mp4"
 OUTPUT_PATH = Path(__file__).parent / "data" / "output" / "test_anonymize.mp4"
 video = cv2.VideoCapture(str(INPUT_PATH)) 
@@ -25,6 +25,7 @@ while True:
     if not ok: 
         break                               
     frames_read += 1 
+    frame = anonymize(frame) 
     writer.write(frame)
 print(f"Frames read: {frames_read}")
 video.release() 

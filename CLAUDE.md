@@ -63,7 +63,9 @@ Quiero aprender ciberseguridad mientras trabajo: cuando un paso tenga algo de se
 - [ ] **Fase 8 (opcional) — Placas de carros:** puente al siguiente proyecto (detección de carros/señales).
 
 ## Dónde nos quedamos
-**2026-11-01:** **Fase 1 terminada** y mergeada (PR #9). **Checklist de seguridad terminado** (PR #10 y ajustes en GitHub). **Fase 2 terminada** y mergeada (PR #12): `--camera` con `argparse`. **Fase 3 terminada**: Windows configurado (venv, librerías, Git) y programa probado con la cámara principal. Siguiente: **Fase 4** (privacy tool).
+**2026-11-01:** **Fase 1 terminada** y mergeada (PR #9). **Checklist de seguridad terminado** (PR #10 y ajustes en GitHub). **Fase 2 terminada** y mergeada (PR #12): `--camera` con `argparse`. **Fase 3 terminada**: Windows configurado (venv, librerías, Git) y programa probado con la cámara principal.
+
+**2026-11-03:** **Fase 4 empezada** (PR #16 y #17). `data/` y los videos están en `.gitignore`. `anonymize_video.py` lee `data/input/test.mp4`, anonimiza cada frame y guarda `data/output/test_anonymize.mp4`. `anonymize()` agranda el área de la cara y ajusta el blur a su tamaño. Siguiente en la Fase 4: elegir método (blur / pixelate / black box) y pasar las rutas del video con `argparse`.
 
 **Lo que ya aprendí:**
 - Slicing: `lista[inicio:fin]` (el `fin` no se incluye). `img.shape[:2]` → `(alto, ancho)`.

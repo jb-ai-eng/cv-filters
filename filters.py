@@ -101,10 +101,18 @@ def anonymize(img):
     if faces is not None:
         for face in faces:
             x, y, fw, fh = face[:4].astype(int)
-            x, y = max(x, 0), max(y, 0)
-            roi = out[y:y + fh, x:x + fw]
-            b = cv2.GaussianBlur(roi, (51, 51 ), 0) 
-            out [y:y + fh, x:x + fw]= b
+            pad_x = fw // 4
+            pad_y = fh // 4
+            x1 = max(x - pad_x, 0)
+            y1 = max(y - pad_y, 0)
+            x2 = min(x + fw + pad_x, w)
+            y2 = min(y + fh + pad_y, h)
+            roi = out[y1:y2, x1:x2]
+            k = (x2 - x1) // 2
+            if k % 2 == 0:
+                k += 1
+            b = cv2.GaussianBlur(roi, (k, k), 0) 
+            out[y1:y2, x1:x2] = b
     return out
 
 

@@ -103,7 +103,10 @@ def anonymize(img):
             x, y, fw, fh = face[:4].astype(int)
             x, y = max(x, 0), max(y, 0)
             roi = out[y:y + fh, x:x + fw]
-            b = cv2.GaussianBlur(roi, (51, 51 ), 0) 
+            k = fw // 2 
+            if k % 2 == 0:
+                k += 1
+            b = cv2.GaussianBlur(roi, (k, k), 0) 
             out [y:y + fh, x:x + fw]= b
     return out
 

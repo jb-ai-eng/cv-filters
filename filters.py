@@ -93,13 +93,11 @@ def face_box(img):
     return out
 
 
-def anonymize(img, method="blur"):
-    if method not in ("blur", "pixelate", "box"):
-        raise ValueError(f"Unknown anonymization method: {method}")
+def detect_faces(img):
     h, w = img.shape[:2]
     FACE_DETECTOR.setInputSize((w, h))
     _, faces = FACE_DETECTOR.detect(img)
-    out = img.copy()
+    boxes = []
     if faces is not None:
         for face in faces:
             x, y, fw, fh = face[:4].astype(int)
@@ -109,20 +107,35 @@ def anonymize(img, method="blur"):
             y1 = max(y - pad_y, 0)
             x2 = min(x + fw + pad_x, w)
             y2 = min(y + fh + pad_y, h)
-            roi = out[y1:y2, x1:x2]
-            if method == "blur":
-                k = (x2 - x1) // 2
-                if k % 2 == 0:
-                    k += 1
-                b = cv2.GaussianBlur(roi, (k, k), 0) 
-                out[y1:y2, x1:x2] = b
-            elif method == "pixelate":
-                small = cv2.resize(roi, (8, 8), interpolation=cv2.INTER_LINEAR)
-                p = cv2.resize(small, (x2 - x1, y2 - y1), interpolation=cv2.INTER_NEAREST)
-                out[y1:y2, x1:x2] = p
-            elif method == "box":
-                out[y1:y2, x1:x2] = 0 
+            if x2 > x1 and y2 > y1:
+                boxes.append((x1, y1, x2, y2))
+    return boxes
+
+
+def cover_faces(img, boxes, method="blur"):
+    if method not in ("blur", "pixelate", "box"):
+        raise ValueError(f"Unknown anonymization method: {method}")
+    out = img.copy()
+    for (x1, y1, x2, y2) in boxes:
+        roi = out[y1:y2, x1:x2]
+        if method == "blur":
+            k = (x2 - x1) // 2
+            if k % 2 == 0:
+                k += 1
+            b = cv2.GaussianBlur(roi, (k, k), 0)
+            out[y1:y2, x1:x2] = b
+        elif method == "pixelate":
+            small = cv2.resize(roi, (8, 8), interpolation=cv2.INTER_LINEAR)
+            p = cv2.resize(small, (x2 - x1, y2 - y1), interpolation=cv2.INTER_NEAREST)
+            out[y1:y2, x1:x2] = p
+        elif method == "box":
+            out[y1:y2, x1:x2] = 0
     return out
+
+
+def anonymize(img, method="blur"):
+    boxes = detect_faces(img)
+    return cover_faces(img, boxes, method)
 
 
 FILTERS = {

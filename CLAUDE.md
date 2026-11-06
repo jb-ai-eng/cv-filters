@@ -68,9 +68,12 @@ Quiero aprender ciberseguridad mientras trabajo: cuando un paso tenga algo de se
 **2026-11-03:** **Fase 4 empezada** (PR #16 y #17). `data/` y los videos están en `.gitignore`. `anonymize_video.py` lee `data/input/test.mp4`, anonimiza cada frame y guarda `data/output/test_anonymize.mp4`. `anonymize()` agranda el área de la cara y ajusta el blur a su tamaño. Siguiente en la Fase 4: elegir método (blur / pixelate / black box) y pasar las rutas del video con `argparse`.
 
 **2026-11-04:** Métodos y opciones de video mergeados (PR #19). `anonymize(img, method="blur")` acepta `blur`, `pixelate` (8×8 cuadros) y `box`; un método desconocido lanza `ValueError` (fail closed). `anonymize_video.py` acepta `--method`, `--input` y `--output` (por defecto `data/input/test.mp4` → `data/output/test_anonymize.mp4`). Umbral de YuNet bajado de 0.6 a 0.4: menos caras perdidas, pero a veces tapa el cuello. Probado en la Mac con un video propio (`data/input/test.mov`, solo local).
-- **Problema abierto:** al girar la cabeza, la cara queda visible unos frames porque el detector la pierde.
-- **Siguiente (cierra la Fase 4):** separar `anonymize()` en "detectar caras" y "tapar caras", y en el video reusar el último recuadro unos ~5 frames cuando no se detecta ninguna cara. Probar con `--method box` y revisar el video a ojo.
-- **Idea para después:** medir de verdad (caras marcadas a mano) y comprobar con reconocimiento facial qué método protege mejor.
+- Problema encontrado: al girar la cabeza, la cara quedaba visible unos frames (resuelto el 2026-11-05).
+
+**2026-11-05:** Caras perdidas resueltas (PR #21). `filters.py` tiene `detect_faces(img)` → lista de recuadros `(x1, y1, x2, y2)` y `cover_faces(img, boxes, method)` → imagen tapada; `anonymize()` llama a las dos (la webcam funciona igual). `anonymize_video.py` guarda los recuadros de los últimos `HOLD_FRAMES = 5` frames en `recent` y los tapa todos. Por qué: con umbral 0.4 siempre detecta *algo*, pero a veces solo el cuello; recordar el último recuadro "solo si no hay nada" no servía. Probado con el video propio: la cara queda tapada al girar.
+- **Problemas conocidos:** se ve tosco y deja estela al moverse rápido; un hueco de más de 5 frames volvería a mostrar la cara.
+- **Siguiente:** decidir si la Fase 4 está terminada (lo principal funciona) o suavizar antes el recuadro entre frames. Después: Fase 5 (README con GIF, grabado con `--method box`).
+- **Idea para después:** medir de verdad (caras marcadas a mano) y comprobar con reconocimiento facial qué método protege mejor. `HOLD_FRAMES` podría ser una opción de la terminal.
 
 **Lo que ya aprendí:**
 - Slicing: `lista[inicio:fin]` (el `fin` no se incluye). `img.shape[:2]` → `(alto, ancho)`.
@@ -83,6 +86,11 @@ Quiero aprender ciberseguridad mientras trabajo: cuando un paso tenga algo de se
 - `cv2.resize` recibe el tamaño como `(ancho, alto)`, al revés que el slicing `img[y, x]`.
 - Fail closed: si algo sale mal, detenerse (`raise`) antes que seguir de forma insegura. `choices=[...]` en `argparse` valida lo que se escribe en la terminal.
 - Una métrica solo vale lo que mide: "encontró algo" no es "encontró la cara correcta".
+- `return` termina la función: el código debajo, en el mismo bloque, nunca se ejecuta (VS Code lo pone en gris). Error que cometí al escribir `detect_faces()` dentro de `anonymize()`.
+- Una función, una tarea: separar "detectar" de "tapar" permitió cambiar la lógica del video sin tocar la webcam.
+- Listas: `append` añade un elemento, `extend` añade todos los de otra lista, `pop(0)` quita el primero, `len()` cuenta. Una lista vacía cuenta como falsa en un `if`.
+- Variables que deben recordar algo entre frames van **antes** del `while`, no dentro.
+- Sangría: siempre 4 espacios por nivel (View → Render Whitespace para verlos).
 
 ## Correcciones pendientes (revisión del 2026-10-29)
 - [x] `anonymize()` está incompleta: no tiene `return` (devuelve `None`). Todo filtro debe devolver una imagen. Cuidado con coordenadas de cara negativas o fuera del borde. (Hecho 2026-10-31: recortar → `GaussianBlur` → pegar con `out[...] = b`.)

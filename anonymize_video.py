@@ -2,7 +2,7 @@ import argparse
 import sys
 import cv2
 from pathlib import Path
-from filters import anonymize
+from filters import detect_faces, cover_faces
 INPUT_PATH = Path(__file__).parent / "data" / "input" / "test.mp4"
 OUTPUT_PATH = Path(__file__).parent / "data" / "output" / "test_anonymize.mp4"
 parser = argparse.ArgumentParser()
@@ -26,12 +26,22 @@ print(f"Width: {width}")
 print(f"Height: {height}") 
 print(f"Frame Count: {frame_count}") 
 frames_read = 0 
+HOLD_FRAMES = 5
+recent = []
 while True: 
     ok, frame = video.read() 
     if not ok: 
         break                               
     frames_read += 1 
-    frame = anonymize(frame, args.method)
+    boxes = detect_faces(frame)
+    recent.append(boxes)
+    if len(recent) > HOLD_FRAMES:
+        recent.pop(0)
+    all_boxes = []
+    for frame_boxes in recent:
+        all_boxes.extend(frame_boxes)
+    frame = cover_faces(frame, all_boxes, args.method)
+
     writer.write(frame)
 print(f"Frames read: {frames_read}")
 video.release() 

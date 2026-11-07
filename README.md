@@ -10,10 +10,12 @@ python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 python filters.py            # webcam
+python filters.py --camera 1 # another camera
 python filters.py photo.jpg  # image
+python anonymize_video.py --method box --input in.mp4 --output out.mp4  # anonymize a video
 ```
 
-Keys: `0-6` switch filter · `s` save screenshot · `q` quit.
+Keys: `0-8` switch filter · `s` save screenshot · `q` quit.
 
 ## Learning path
 

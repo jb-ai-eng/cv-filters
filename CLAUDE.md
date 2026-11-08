@@ -56,7 +56,7 @@ Quiero aprender ciberseguridad mientras trabajo: cuando un paso tenga algo de se
 - [x] **Fase 1 — Base limpia:** terminar las "Correcciones pendientes" pequeñas (`pathlib`, Canny, docstring).
 - [x] **Fase 2 — Webcam externa:** elegir cámara al ejecutar (`python filters.py --camera 1`) con `argparse`.
 - [x] **Fase 3 — Dos computadoras:** subir `.claude/` a git; instalar en Windows Git, Python, VS Code y Claude Code; venv en PowerShell (`venv\Scripts\Activate.ps1`). Regla: `git pull` al empezar, `git push` al terminar.
-- [ ] **Fase 4 — Privacy tool:** procesar archivos de video completos y guardar el resultado; elegir método (blur / pixelate / black box).
+- [x] **Fase 4 — Privacy tool:** procesar archivos de video completos y guardar el resultado; elegir método (blur / pixelate / black box).
 - [ ] **Fase 5 — README con GIF demo** (primera versión; actualizar al final).
 - [ ] **Fase 6 — Refactor:** filtros reciben sus valores como parámetros (no leen sliders dentro).
 - [ ] **Fase 7 — App web:** Gradio + publicar gratis en Hugging Face Spaces (funciona también en el navegador del teléfono). Aquí se resuelve la "barra bonita".
@@ -72,7 +72,7 @@ Quiero aprender ciberseguridad mientras trabajo: cuando un paso tenga algo de se
 
 **2026-11-05:** Caras perdidas resueltas (PR #21). `filters.py` tiene `detect_faces(img)` → lista de recuadros `(x1, y1, x2, y2)` y `cover_faces(img, boxes, method)` → imagen tapada; `anonymize()` llama a las dos (la webcam funciona igual). `anonymize_video.py` guarda los recuadros de los últimos `HOLD_FRAMES = 5` frames en `recent` y los tapa todos. Por qué: con umbral 0.4 siempre detecta *algo*, pero a veces solo el cuello; recordar el último recuadro "solo si no hay nada" no servía. Probado con el video propio: la cara queda tapada al girar.
 - **Problemas conocidos:** se ve tosco y deja estela al moverse rápido; un hueco de más de 5 frames volvería a mostrar la cara.
-- **Siguiente:** decidir si la Fase 4 está terminada (lo principal funciona) o suavizar antes el recuadro entre frames. Después: Fase 5 (README con GIF, grabado con `--method box`).
+- **Siguiente:** Fase 4 cerrada el 2026-11-07 (suavizar el recuadro queda como mejora futura). Ahora: Fase 5 (README con GIF, grabado con `--method box`).
 - **Idea para después:** medir de verdad (caras marcadas a mano) y comprobar con reconocimiento facial qué método protege mejor. `HOLD_FRAMES` podría ser una opción de la terminal.
 
 **Lo que ya aprendí:**

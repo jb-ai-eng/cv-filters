@@ -9,7 +9,10 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--method", choices=["blur", "pixelate", "box"], default="blur")
 parser.add_argument("--input", type=Path, default=INPUT_PATH)
 parser.add_argument("--output", type=Path, default=OUTPUT_PATH)
+parser.add_argument("--hold", type=int, default=5)
 args = parser.parse_args()
+if args.hold < 1:
+    sys.exit("--hold must be 1 or more")
 video = cv2.VideoCapture(str(args.input)) 
 if not video.isOpened(): 
     sys.exit("Could not open the video") 
@@ -25,8 +28,7 @@ print(f"FPS: {fps}")
 print(f"Width: {width}") 
 print(f"Height: {height}") 
 print(f"Frame Count: {frame_count}") 
-frames_read = 0 
-HOLD_FRAMES = 5
+frames_read = 0
 recent = []
 while True: 
     ok, frame = video.read() 
@@ -35,7 +37,7 @@ while True:
     frames_read += 1 
     boxes = detect_faces(frame)
     recent.append(boxes)
-    if len(recent) > HOLD_FRAMES:
+    if len(recent) > args.hold:
         recent.pop(0)
     all_boxes = []
     for frame_boxes in recent:

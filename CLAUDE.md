@@ -57,7 +57,7 @@ Quiero aprender ciberseguridad mientras trabajo: cuando un paso tenga algo de se
 - [x] **Fase 2 — Webcam externa:** elegir cámara al ejecutar (`python filters.py --camera 1`) con `argparse`.
 - [x] **Fase 3 — Dos computadoras:** subir `.claude/` a git; instalar en Windows Git, Python, VS Code y Claude Code; venv en PowerShell (`venv\Scripts\Activate.ps1`). Regla: `git pull` al empezar, `git push` al terminar.
 - [x] **Fase 4 — Privacy tool:** procesar archivos de video completos y guardar el resultado; elegir método (blur / pixelate / black box).
-- [ ] **Fase 5 — README con GIF demo** (primera versión; actualizar al final).
+- [x] **Fase 5 — README con GIF demo** (primera versión; actualizar al final).
 - [ ] **Fase 6 — Refactor:** filtros reciben sus valores como parámetros (no leen sliders dentro).
 - [ ] **Fase 7 — App web:** Gradio + publicar gratis en Hugging Face Spaces (funciona también en el navegador del teléfono). Aquí se resuelve la "barra bonita".
 - [ ] **Fase 8 (opcional) — Placas de carros:** puente al siguiente proyecto (detección de carros/señales).
@@ -77,7 +77,7 @@ Quiero aprender ciberseguridad mientras trabajo: cuando un paso tenga algo de se
 
 **2026-11-08:** Opción `--hold` mergeada (PR #25): cuántos frames se mantienen los recuadros de cara (por defecto 5; menos de 1 → error).
 
-**2026-11-09:** Windows actualizado (`git pull`) y probado: `--method box` tapa la cara también al girar la cabeza; la webcam (`filters.py`) funciona. Siguiente: Fase 5.
+**2026-11-09:** Windows actualizado (`git pull`) y probado: `--method box` tapa la cara también al girar la cabeza; la webcam (`filters.py`) funciona. **Fase 5 terminada:** video de stock de Pexels (autora Kelly, licencia Pexels) anonimizado con `--method box`; `make_gif.py` lo convierte en `assets/demo.gif` (recorta con `--top`/`--bottom`, usa 1 de cada `--every` frames, solo `--seconds`; 8 MB con `--every 3 --seconds 5`). README con sección Demo, crédito y limitación conocida (falsos positivos en el cielo). `pillow==13.0.0` añadido a `requirements.txt`. Siguiente: Fase 6 (refactor).
 
 
 **Lo que ya aprendí:**
@@ -96,6 +96,12 @@ Quiero aprender ciberseguridad mientras trabajo: cuando un paso tenga algo de se
 - Listas: `append` añade un elemento, `extend` añade todos los de otra lista, `pop(0)` quita el primero, `len()` cuenta. Una lista vacía cuenta como falsa en un `if`.
 - Variables que deben recordar algo entre frames van **antes** del `while`, no dentro.
 - Sangría: siempre 4 espacios por nivel (View → Render Whitespace para verlos).
+- Falso positivo = tapa algo que no es cara; falso negativo = deja una cara visible. En privacidad, el falso negativo es el grave.
+- Si mi código hace `import` de una librería, va en `requirements.txt` (aunque ya venga instalada por otra).
+- `break` termina el loop; `continue` salta solo a la siguiente vuelta.
+- `argparse`: cada opción una sola vez (si no, `conflicting option string`). Traceback largo: leer la última línea y la primera que menciona mi archivo.
+- Un GIF solo tiene 256 colores y pesa mucho: menos píxeles (recortar) y menos frames para que pese menos de 10 MB.
+- Windows: usar PowerShell 7 (icono negro); Windows PowerShell 5.1 (azul) bloquea `Activate.ps1`. El visor de `git diff` se cierra con `q`.
 
 ## Correcciones pendientes (revisión del 2026-10-29)
 - [x] `anonymize()` está incompleta: no tiene `return` (devuelve `None`). Todo filtro debe devolver una imagen. Cuidado con coordenadas de cara negativas o fuera del borde. (Hecho 2026-10-31: recortar → `GaussianBlur` → pegar con `out[...] = b`.)

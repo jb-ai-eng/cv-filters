@@ -73,7 +73,12 @@ Quiero aprender ciberseguridad mientras trabajo: cuando un paso tenga algo de se
 **2026-11-05:** Caras perdidas resueltas (PR #21). `filters.py` tiene `detect_faces(img)` → lista de recuadros `(x1, y1, x2, y2)` y `cover_faces(img, boxes, method)` → imagen tapada; `anonymize()` llama a las dos (la webcam funciona igual). `anonymize_video.py` guarda los recuadros de los últimos `HOLD_FRAMES = 5` frames en `recent` y los tapa todos. Por qué: con umbral 0.4 siempre detecta *algo*, pero a veces solo el cuello; recordar el último recuadro "solo si no hay nada" no servía. Probado con el video propio: la cara queda tapada al girar.
 - **Problemas conocidos:** se ve tosco y deja estela al moverse rápido; un hueco de más de 5 frames volvería a mostrar la cara.
 - **Siguiente:** Fase 4 cerrada el 2026-11-07 (suavizar el recuadro queda como mejora futura). Ahora: Fase 5 (README con GIF, grabado con `--method box`).
-- **Idea para después:** medir de verdad (caras marcadas a mano) y comprobar con reconocimiento facial qué método protege mejor. `HOLD_FRAMES` podría ser una opción de la terminal.
+- **Idea para después:** medir de verdad (caras marcadas a mano) y comprobar con reconocimiento facial qué método protege mejor.
+
+**2026-11-08:** Opción `--hold` mergeada (PR #25): cuántos frames se mantienen los recuadros de cara (por defecto 5; menos de 1 → error).
+
+**2026-11-09:** Windows actualizado (`git pull`) y probado: `--method box` tapa la cara también al girar la cabeza; la webcam (`filters.py`) funciona. Siguiente: Fase 5.
+
 
 **Lo que ya aprendí:**
 - Slicing: `lista[inicio:fin]` (el `fin` no se incluye). `img.shape[:2]` → `(alto, ancho)`.

@@ -3,6 +3,15 @@
 A computer vision practice project with Python and OpenCV.
 Real-time webcam filters that grow level by level.
 
+## Demo
+
+![Faces covered with the box method](assets/demo.gif)
+
+Faces covered with `python anonymize_video.py --method box`; GIF made with `make_gif.py`.
+Video by [Kelly on Pexels](https://www.pexels.com/es-es/video/ciudad-carretera-paisaje-hombre-16668264/) (Pexels license).
+
+**Known limitation:** the detector sometimes covers things that are not faces, such as a cloud shape in the sky. This is on purpose: covering too much is safer than missing a face.
+
 ## How to run
 
 ```bash
@@ -13,6 +22,7 @@ python filters.py            # webcam
 python filters.py --camera 1 # another camera
 python filters.py photo.jpg  # image
 python anonymize_video.py --method box --input in.mp4 --output out.mp4  # anonymize a video
+python make_gif.py --every 3 --seconds 5  # turn the anonymized video into a GIF
 ```
 
 Keys: `0-8` switch filter · `s` save screenshot · `q` quit.

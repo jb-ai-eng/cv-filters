@@ -38,11 +38,10 @@ def gray(img):
     return cv2.cvtColor(g, cv2.COLOR_GRAY2BGR)
 
 
-def blur(img):
-    k = cv2.getTrackbarPos("Blur","CV Filters") 
+def blur(img, k):
     if k % 2 == 0:
-        k = k+ 1
-    # Blur size comes from the slider; it must be odd, so we fix even values
+        k = k + 1
+    # Blur size has to be odd, so we fix even values
     return cv2.GaussianBlur(img, (k, k), 0)
 
 
@@ -187,8 +186,12 @@ def main():
             if not ok:
                 break
             frame = cv2.flip(frame, 1)  # mirror effect
+        if apply_filter == blur:
+            k = cv2.getTrackbarPos("Blur", "CV Filters")
+            output = blur(frame, k)
+        else:
+            output = apply_filter(frame)
 
-        output = apply_filter(frame)
         draw_label(output, name)
         cv2.imshow("CV Filters", output)
 

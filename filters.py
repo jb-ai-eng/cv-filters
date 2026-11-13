@@ -38,17 +38,15 @@ def gray(img):
     return cv2.cvtColor(g, cv2.COLOR_GRAY2BGR)
 
 
-def blur(img):
-    k = cv2.getTrackbarPos("Blur","CV Filters") 
+def blur(img, k):
     if k % 2 == 0:
-        k = k+ 1
-    # Blur size comes from the slider; it must be odd, so we fix even values
+        k = k + 1
+    # Blur size has to be odd, so we fix even values
     return cv2.GaussianBlur(img, (k, k), 0)
 
 
-def edges(img):
+def edges(img, h):
     g = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    h = cv2.getTrackbarPos("Edges","CV Filters")
     e = cv2.Canny(g, h, h * 2)  # high threshold = 2x low, so low < high always
     return cv2.cvtColor(e, cv2.COLOR_GRAY2BGR)
 
@@ -187,8 +185,15 @@ def main():
             if not ok:
                 break
             frame = cv2.flip(frame, 1)  # mirror effect
+        if apply_filter == blur:
+            k = cv2.getTrackbarPos("Blur", "CV Filters")
+            output = blur(frame, k)
+        elif apply_filter == edges: 
+            h = cv2.getTrackbarPos("Edges", "CV Filters")
+            output = edges(frame, h)   
+        else:
+            output = apply_filter(frame)
 
-        output = apply_filter(frame)
         draw_label(output, name)
         cv2.imshow("CV Filters", output)
 

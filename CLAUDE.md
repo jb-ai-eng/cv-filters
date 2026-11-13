@@ -58,7 +58,7 @@ Quiero aprender ciberseguridad mientras trabajo: cuando un paso tenga algo de se
 - [x] **Fase 3 — Dos computadoras:** subir `.claude/` a git; instalar en Windows Git, Python, VS Code y Claude Code; venv en PowerShell (`venv\Scripts\Activate.ps1`). Regla: `git pull` al empezar, `git push` al terminar.
 - [x] **Fase 4 — Privacy tool:** procesar archivos de video completos y guardar el resultado; elegir método (blur / pixelate / black box).
 - [x] **Fase 5 — README con GIF demo** (primera versión; actualizar al final).
-- [ ] **Fase 6 — Refactor:** filtros reciben sus valores como parámetros (no leen sliders dentro).
+- [x] **Fase 6 — Refactor:** filtros reciben sus valores como parámetros (no leen sliders dentro).
 - [ ] **Fase 7 — App web:** Gradio + publicar gratis en Hugging Face Spaces (funciona también en el navegador del teléfono). Aquí se resuelve la "barra bonita".
 - [ ] **Fase 8 (opcional) — Placas de carros:** puente al siguiente proyecto (detección de carros/señales).
 
@@ -79,6 +79,9 @@ Quiero aprender ciberseguridad mientras trabajo: cuando un paso tenga algo de se
 
 **2026-11-09:** Windows actualizado (`git pull`) y probado: `--method box` tapa la cara también al girar la cabeza; la webcam (`filters.py`) funciona. **Fase 5 terminada:** video de stock de Pexels (autora Kelly, licencia Pexels) anonimizado con `--method box`; `make_gif.py` lo convierte en `assets/demo.gif` (recorta con `--top`/`--bottom`, usa 1 de cada `--every` frames, solo `--seconds`; 8 MB con `--every 3 --seconds 5`). README con sección Demo, crédito y limitación conocida (falsos positivos en el cielo). `pillow==13.0.0` añadido a `requirements.txt`. Siguiente: Fase 6 (refactor).
 
+**2026-11-10/11:** Mac actualizada (`git pull` + `pillow` instalado). Repaso del `--hold` con el REPL: con `--hold 0`, `pop(0)` vacía `recent` en cada frame y ninguna cara se tapa → por eso `--hold` < 1 da error. Repaso de tipos de datos (`int`, `float`, `str`, `bool`, `list`, `tuple`, `dict`). Descartada una línea `--hold` suelta en `filters.py` (`git restore`).
+
+**2026-11-12:** **Fase 6 terminada** (branch `refactor-filter-params`): `blur(img, k)` y `edges(img, h)` reciben su valor como parámetro; `main()` lee los sliders con `if` / `elif` / `else` y se los pasa. La webcam se ve igual (es un refactor); sirve para la Fase 7, donde los valores vendrán de Gradio y no de la ventana de OpenCV. Siguiente: Fase 7 (app web con Gradio).
 
 **Lo que ya aprendí:**
 - Slicing: `lista[inicio:fin]` (el `fin` no se incluye). `img.shape[:2]` → `(alto, ancho)`.
@@ -102,6 +105,13 @@ Quiero aprender ciberseguridad mientras trabajo: cuando un paso tenga algo de se
 - `argparse`: cada opción una sola vez (si no, `conflicting option string`). Traceback largo: leer la última línea y la primera que menciona mi archivo.
 - Un GIF solo tiene 256 colores y pesa mucho: menos píxeles (recortar) y menos frames para que pese menos de 10 MB.
 - Windows: usar PowerShell 7 (icono negro); Windows PowerShell 5.1 (azul) bloquea `Activate.ps1`. El visor de `git diff` se cierra con `q`.
+- Tipos de datos: `int` (entero), `float` (con punto: `9.99`), `str` (texto), `bool` (`True`/`False`), `list` `[ ]` (varios en orden, se cambia), `tuple` `( )` (partes fijas), `dict` `{ }` (clave → valor, como `FILTERS`).
+- Un `if` solo pregunta, no cambia nada; lo que cambia la lista es `append`/`pop`. `x += 1` es lo mismo que `x = x + 1`.
+- Un string se abre y se cierra con la misma comilla: `"cara"`, no `"cara'`. En el REPL, escribir una línea y esperar `>>>` antes de la siguiente.
+- "Sin errores de sintaxis" no es "funciona": un `NameError` solo aparece al ejecutar esa línea.
+- Refactor = mejorar cómo está organizado el código sin cambiar lo que hace. Un parámetro es un dato que la función recibe entre paréntesis; así no depende de dónde sale el valor.
+- Al borrar líneas, los números de las de abajo cambian: buscar por contenido (`Cmd + F`). `Cmd + Shift + K` borra una línea. `git restore <archivo>` deshace los cambios sin commit.
+- El autocompletado adivina: leer antes de aceptar. La terminal solo entiende comandos (`git`, `python`...); el código Python va en el editor.
 
 ## Correcciones pendientes (revisión del 2026-10-29)
 - [x] `anonymize()` está incompleta: no tiene `return` (devuelve `None`). Todo filtro debe devolver una imagen. Cuidado con coordenadas de cara negativas o fuera del borde. (Hecho 2026-10-31: recortar → `GaussianBlur` → pegar con `out[...] = b`.)
@@ -110,7 +120,7 @@ Quiero aprender ciberseguridad mientras trabajo: cuando un paso tenga algo de se
 - [x] Docstring dice teclas `0-6` (falta `7`). En el README, marcar como hecha la tarea de sliders del Nivel 2. (Hecho 2026-10-31.)
 - [x] Fijar versiones en `requirements.txt`. Ya está en main (PR #6) sin versiones; el venv tiene `mediapipe==1.2.0`, `numpy==2.5.4`, `opencv-contrib-python==5.0.0.93`. No instalar `opencv-python` (choca con `opencv-contrib-python`). Usar siempre `python -m pip`.
 - [ ] No mergear commits "WIP" a `main`; usar mensajes descriptivos.
-- [ ] (Más adelante) `blur`/`edges` leen el slider dentro de la función: pasar los valores como parámetros.
+- [x] (Más adelante) `blur`/`edges` leen el slider dentro de la función: pasar los valores como parámetros. (Hecho 2026-11-12, Fase 6.)
 - [ ] (Fase 7) Interfaz más bonita: los sliders de OpenCV (`createTrackbar`) no se pueden personalizar → se resuelve con la app web de Gradio.
 
 Al terminar una corrección, márcala con [x].

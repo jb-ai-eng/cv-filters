@@ -45,9 +45,8 @@ def blur(img, k):
     return cv2.GaussianBlur(img, (k, k), 0)
 
 
-def edges(img):
+def edges(img, h):
     g = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    h = cv2.getTrackbarPos("Edges","CV Filters")
     e = cv2.Canny(g, h, h * 2)  # high threshold = 2x low, so low < high always
     return cv2.cvtColor(e, cv2.COLOR_GRAY2BGR)
 
@@ -189,6 +188,9 @@ def main():
         if apply_filter == blur:
             k = cv2.getTrackbarPos("Blur", "CV Filters")
             output = blur(frame, k)
+        elif apply_filter == edges: 
+            h = cv2.getTrackbarPos("Edges", "CV Filters")
+            output = edges(frame, h)   
         else:
             output = apply_filter(frame)
 

@@ -83,6 +83,8 @@ Quiero aprender ciberseguridad mientras trabajo: cuando un paso tenga algo de se
 
 **2026-11-12:** **Fase 6 terminada** (branch `refactor-filter-params`): `blur(img, k)` y `edges(img, h)` reciben su valor como parámetro; `main()` lee los sliders con `if` / `elif` / `else` y se los pasa. La webcam se ve igual (es un refactor); sirve para la Fase 7, donde los valores vendrán de Gradio y no de la ventana de OpenCV. Siguiente: Fase 7 (app web con Gradio).
 
+**2026-11-13/14:** **Fase 7 empezada** en Windows (branch `add-gradio-app`). `gradio==6.32.0` instalado (no cambió las versiones fijadas) y añadido a `requirements.txt`. `app.py`: `anonymize_photo(image, method)` convierte RGB → BGR, llama a `anonymize()` de `filters.py` y vuelve a RGB; `gr.Interface` con una foto, un `gr.Radio` (blur / pixelate / box) y la imagen tapada. Probado en local (`python app.py` → `http://127.0.0.1:7860`): tapa la cara con `box` y `blur`. Siguiente: publicar en Hugging Face Spaces (cuenta, token fuera del repo) y después video en la app.
+
 **Lo que ya aprendí:**
 - Slicing: `lista[inicio:fin]` (el `fin` no se incluye). `img.shape[:2]` → `(alto, ancho)`.
 - En imágenes: `img[filas, columnas]` = `img[y, x]` (y primero, al revés que `cv2.rectangle`).
@@ -111,6 +113,8 @@ Quiero aprender ciberseguridad mientras trabajo: cuando un paso tenga algo de se
 - "Sin errores de sintaxis" no es "funciona": un `NameError` solo aparece al ejecutar esa línea.
 - Refactor = mejorar cómo está organizado el código sin cambiar lo que hace. Un parámetro es un dato que la función recibe entre paréntesis; así no depende de dónde sale el valor.
 - Al borrar líneas, los números de las de abajo cambian: buscar por contenido (`Cmd + F`). `Cmd + Shift + K` borra una línea. `git restore <archivo>` deshace los cambios sin commit.
+- Gradio: `import gradio as gr` (`as` pone un apodo). `demo.launch()` no abre el navegador: abrir `http://127.0.0.1:7860` a mano; la terminal queda ocupada mientras la app corre y `Ctrl + C` la apaga. `127.0.0.1` = solo mi computadora; nunca `share=True`. Gradio da RGB y OpenCV usa BGR.
+- Hugging Face Spaces aloja la app; Gradio es la librería con la que se escribe.
 - El autocompletado adivina: leer antes de aceptar. La terminal solo entiende comandos (`git`, `python`...); el código Python va en el editor.
 
 ## Correcciones pendientes (revisión del 2026-10-29)

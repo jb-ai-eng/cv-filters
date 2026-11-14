@@ -23,6 +23,7 @@ python filters.py --camera 1 # another camera
 python filters.py photo.jpg  # image
 python anonymize_video.py --method box --input in.mp4 --output out.mp4  # anonymize a video
 python make_gif.py --every 3 --seconds 5  # turn the anonymized video into a GIF
+python app.py                # web app on http://127.0.0.1:7860 (upload a photo)
 ```
 
 Keys: `0-8` switch filter · `s` save screenshot · `q` quit.

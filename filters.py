@@ -13,6 +13,7 @@ Keys:
 """
 import argparse 
 import sys
+import time 
 import cv2
 import numpy as np
 from pathlib import Path
@@ -177,6 +178,7 @@ def main():
     cv2.createTrackbar("Edges","CV Filters", 100, 255, lambda v: None) 
 
     shots = 0
+    prev_time = time.perf_counter()
     while True:
         if still_image is not None:
             frame = still_image.copy()
@@ -195,6 +197,10 @@ def main():
             output = apply_filter(frame)
 
         draw_label(output, name)
+        now = time.perf_counter()
+        fps = 1 / (now - prev_time)
+        prev_time = now
+        cv2.putText(output, f"FPS: {fps:.1f}", (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
         cv2.imshow("CV Filters", output)
 
         key = cv2.waitKey(1) & 0xFF

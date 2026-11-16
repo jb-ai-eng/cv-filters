@@ -39,7 +39,7 @@ Each level = one or more commits. Check things off as you go.
 
 ### Level 2 — Live controls
 - [x] Add sliders with `cv2.createTrackbar` to tune blur and Canny thresholds
-- [ ] Show FPS on screen (use `time.time()`)
+- [x] Show FPS on screen (use `time.perf_counter()`)
 
 ### Level 3 — Face detection
 - [x] Detect faces with YuNet (`cv2.FaceDetectorYN`), OpenCV 5's modern face detector
